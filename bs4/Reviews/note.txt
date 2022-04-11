@@ -1,0 +1,4 @@
+ReviewContentsummary113361668
+https://store.steampowered.com/appreviews/915810?cursor=*&day_range=30&start_date=-1&end_date=-1&date_range_type=all&filter=summary&language=english&l=english&review_type=all&purchase_type=all&playtime_filter_min=0&playtime_filter_max=0&filter_offtopic_activity=1
+https://store.steampowered.com//userreviews/ajaxgetvotes/
+<meta property="og:url" content="https://store.steampowered.com/app/915810/Midnight_Ghost_Hunt/">
