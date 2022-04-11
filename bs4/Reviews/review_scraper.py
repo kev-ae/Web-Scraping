@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 pages_to_visit = []
 visited_pages = []
-seed = 'https://store.steampowered.com/app/920210/LEGO_Star_Wars_The_Skywalker_Saga/'
+seed = 'https://store.steampowered.com/'
 api = 'https://store.steampowered.com/appreviews/{}?cursor=*&day_range=30&start_date=-1&end_date=-1&date_range_type=all&filter=summary&language=english&l=english&review_type=all&purchase_type=all&playtime_filter_min=0&playtime_filter_max=0&filter_offtopic_activity=1'
 
 pages_to_visit.append(seed)
@@ -22,6 +22,7 @@ while len(pages_to_visit) != 0:
     if search:
         data_obj = {}
         data_obj['reviews'] = []
+
         # if url is a game page, get the game id
         temp = str(url)[search.end():]
         delimiter = temp.find('/')
@@ -42,12 +43,13 @@ while len(pages_to_visit) != 0:
             name_container = review.find('div', {'class' : 'persona_name'})
             data_obj['reviews'].append({
                 'username' : name_container.find('a').text,
-                'comment' : review.find('div', {'class' : 'content'}).text
+                'comment' : review.find('div', {'class' : 'content'}).text.strip()
                 })
 
         data.append(data_obj)
 
+    # crawl website for links
     visited_pages.append(page)
 
 with open('file.json', 'w') as out_file:
-    json.dump(data, out_file)
+    json.dump(data, out_file, ensure_ascii=False)
