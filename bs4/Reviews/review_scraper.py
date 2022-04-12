@@ -3,13 +3,16 @@ import re
 import json
 from bs4 import BeautifulSoup
 
-pages_to_visit = []
-visited_pages = []
-seed = 'https://store.steampowered.com/'
+seed = 'https://store.steampowered.com/explore/new/'
 api = 'https://store.steampowered.com/appreviews/{}?cursor=*&day_range=30&start_date=-1&end_date=-1&date_range_type=all&filter=summary&language=english&l=english&review_type=all&purchase_type=all&playtime_filter_min=0&playtime_filter_max=0&filter_offtopic_activity=1'
 
-pages_to_visit.append(seed)
 data = []
+
+new_html = requests.get(seed).content
+soup = BeautifulSoup(new_html, 'html.parser')
+new_releases = soup.find_all('a', {'data-ds-itemkey' : re.compile('^App_[0-9]*$')})
+pages_to_visit = [store_page['href'] for store_page in new_releases]
+
 
 # main loop
 while len(pages_to_visit) != 0:
@@ -47,9 +50,6 @@ while len(pages_to_visit) != 0:
                 })
 
         data.append(data_obj)
-
-    # crawl website for links
-    visited_pages.append(page)
 
 with open('file.json', 'w') as out_file:
     json.dump(data, out_file, ensure_ascii=False)
