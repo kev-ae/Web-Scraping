@@ -16,16 +16,12 @@ pages_to_visit = [store_page['href'] for store_page in new_releases]
 
 # main loop
 while len(pages_to_visit) != 0:
-    page = pages_to_visit.pop(0)
-    raw_html = requests.get(page).content
-    soup = BeautifulSoup(raw_html, 'html.parser')
-    url = soup.find('meta', {'property' : 'og:url'})
+    url = pages_to_visit.pop(0)
 
     search = re.search('/app/', str(url))
     if search:
         data_obj = {}
-        data_obj['reviews'] = []
-
+        
         # if url is a game page, get the game id
         temp = str(url)[search.end():]
         delimiter = temp.find('/')
@@ -36,10 +32,11 @@ while len(pages_to_visit) != 0:
         delimiter = temp.find('/')
         data_obj['game_title'] = temp[:delimiter]
 
+        data_obj['reviews'] = []
         # get the reviews
         reviews_html = requests.get(api.format(data_obj['game_id'])).json()['html']
-        s = BeautifulSoup(reviews_html, 'html.parser')
-        reviews = s.find_all('div', {'id': re.compile('^ReviewContentsummary[0-9]*$')})
+        soup = BeautifulSoup(reviews_html, 'html.parser')
+        reviews = soup.find_all('div', {'id': re.compile('^ReviewContentsummary[0-9]*$')})
 
         # extract data from every review
         for review in reviews:
