@@ -5,8 +5,8 @@ import json
 from bs4 import BeautifulSoup
 
 '''
-What words are being use to describe new releases and are there any correlation between games have have a positive review and those
-that have a negative review
+What words are being use to describe new releases and the correlation between words used for games have have a positive review
+and those that have a negative review
 '''
 
 seed = 'https://store.steampowered.com/explore/new/'
@@ -70,7 +70,8 @@ while len(pages_to_visit) != 0:
             name_container = review.find('div', {'class' : 'persona_name'})
             data_obj['reviews'].append({
                 'username' : name_container.find('a').text.strip(),
-                'comment' : review.find('div', {'class' : 'content'}).text.strip() # get positive or negative
+                'score' : review.find('div', {'class' : 'title'}).text.strip(),
+                'comment' : review.find('div', {'class' : 'content'}).text.strip()
                 })
 
         data.append(data_obj)
