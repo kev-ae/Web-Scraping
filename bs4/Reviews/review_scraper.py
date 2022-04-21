@@ -76,5 +76,9 @@ while len(pages_to_visit) != 0:
 
         data.append(data_obj)
 
-with open('file.json', 'w') as out_file:
-    json.dump(data, out_file, ensure_ascii=False)
+js = {
+    'games': data
+    }
+
+with open('db/data.json', 'w') as out_file:
+    json.dump(js, out_file, ensure_ascii=False)
