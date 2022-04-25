@@ -44,7 +44,7 @@ if '__main__' == __name__:
 
             # get the overall score in the last 30 days
             review_summary = soup.find('div', {'id' : 'userReviews'})
-            score = review_summary.find('span', {'class' : 'responsive_reviewdesc'})
+            score = review_summary.find('span', {'class' : 'game_review_summary'})
             data_obj['overall_score'] = score.text.strip() if score != None else None
 
             # get the best score recieve
