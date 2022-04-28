@@ -42,6 +42,20 @@ if '__main__' == __name__:
             raw_html = requests.get(url).content
             soup = BeautifulSoup(raw_html, 'html.parser')
 
+            # get the price of the game
+            price = soup.find('div', {'class' : 'game_purchase_price'})
+            if price == None:
+                discount_container = soup.find('div', {'id' : re.compile('^game_area_purchase_section_add_to_cart_[0-9]*$')})
+                original_price = discount_container.find('div', {'class' : 'discount_original_price'}) if discount_container != None else None
+                discount_price = discount_container.find('div', {'class' : 'discount_final_price'}) if discount_container != None else None
+                if original_price == None or discount_price == None:
+                    data_obj['price'] = None
+                else:
+                    data_obj['discount_original_price'] = original_price.text.strip()
+                    data_obj['discount_price'] = discount_price.text.strip()
+            else:
+                data_obj['price'] = price.text.strip()
+
             # get the overall score in the last 30 days
             review_summary = soup.find('div', {'id' : 'userReviews'})
             score = review_summary.find('span', {'class' : 'game_review_summary'})
