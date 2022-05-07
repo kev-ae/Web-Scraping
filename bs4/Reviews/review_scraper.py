@@ -1,4 +1,5 @@
 from logging.handlers import DEFAULT_SOAP_LOGGING_PORT
+import os
 import requests
 import re
 import json
@@ -9,7 +10,7 @@ What words are being use to describe new releases and the correlation between wo
 and those that have a negative review
 '''
 
-if '__main__' == __name__:
+def run_scraper():
     seed = 'https://store.steampowered.com/explore/new/'
     api = 'https://store.steampowered.com/appreviews/{}?cursor=*&day_range=30&start_date=-1&end_date=-1&date_range_type=all&filter=summary&language=english&l=english&review_type=all&purchase_type=all&playtime_filter_min=0&playtime_filter_max=0&filter_offtopic_activity=1'
 
@@ -95,5 +96,10 @@ if '__main__' == __name__:
         'games': data
         }
 
-    with open('db/data.json', 'w') as out_file:
+    db_loc = os.environ['DB_LOC']
+    with open(db_loc + '/data.json', 'w') as out_file:
         json.dump(js, out_file, ensure_ascii=False)
+
+
+if __name__ == '__main__':
+    run_scraper()
